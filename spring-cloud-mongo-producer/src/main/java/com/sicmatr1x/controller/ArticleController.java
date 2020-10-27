@@ -3,6 +3,7 @@ package com.sicmatr1x.controller;
 import com.sicmatr1x.pojo.Article;
 import com.sicmatr1x.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;

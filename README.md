@@ -1,4 +1,24 @@
 
+## Project Structure
+
+Server:
+1. spring-cloud-eureka
+  - port: 8091
+  - description: Spring Cloud eureka发现中心
+2. spring-cloud-common
+  - port: N/A
+  - description: 放一些common的类与POJO等
+3. spring-cloud-mongo-producer
+  - port: 8092
+  - description: 用于连接mongoDB
+4. spring-cloud-consumer
+  - port: 8090
+  - description: 提供控制层访问
+5. spring-cloud-spider
+  - port: 8093
+  - description: 提供网页爬取服务
+
+
 ## install
 
 ### MongoDB
