@@ -1,4 +1,9 @@
 
+## Spring Version
+
+- Spring Boot: 1.5.9.RELEASE
+- Spring Cloud: Edgware.SR1
+
 ## Project Structure
 
 Server:
