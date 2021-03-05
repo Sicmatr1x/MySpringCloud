@@ -16,7 +16,6 @@
         <module>spring-cloud-common</module>
     </modules>
 
-    <packaging>pom</packaging>
     <name>spring cloud</name>
     <description>Demo project for Spring Cloud</description>
 

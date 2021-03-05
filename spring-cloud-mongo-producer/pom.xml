@@ -45,7 +45,8 @@
 			<groupId>com.sicmatr1x</groupId>
 			<artifactId>spring-cloud-common</artifactId>
 			<version>1.0.0.BUILD-SNAPSHOT</version>
-			<scope>compile</scope>
+			<scope>system</scope><!-- 修改成从本地target文件夹装载自己的jar包，需要先对spring-cloud-common进行install -->
+			<systemPath>${project.basedir}/../spring-cloud-common/target/spring-cloud-common-1.0.0.BUILD-SNAPSHOT.jar</systemPath>
 		</dependency>
 	</dependencies>
 
