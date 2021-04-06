@@ -48,7 +48,7 @@ public class SyncArticleController {
             produces = "application/json;charset=UTF-8",
             response = CommonVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(paramType = "path",name = "additionalMode",value = "是否启用追加模式", dataType = "Boolean", defaultValue = "true", required = true),
+            @ApiImplicitParam(paramType = "path",name = "additionalMode",value = "是否启用追加模式", dataType = "String", defaultValue = "on", required = true),
             @ApiImplicitParam(paramType = "path",name = "mongodbMap",value = "mongoDB连接信息", dataType = "Map<String, String>",
                     defaultValue = "username:NoteBookServer_appln," +
                             "password:Friday5" +
@@ -60,11 +60,19 @@ public class SyncArticleController {
     @ApiResponses(value = {
             @ApiResponse(code = 404, message = "Pet not found")
     })
-    public CommonVo autoMargeArticles(@RequestBody Boolean additionalMode, @RequestBody Map<String, String> mongodbMap) {
+    public CommonVo autoMargeArticles(@RequestBody Map<String, String> params) {
+        boolean flag = false;
+        String additionalMode = params.get("additionalMode");
+        Map<String, String> mongodbMap = new HashMap<>();
+        mongodbMap.put("host", params.get("host"));
+        mongodbMap.put("port", params.get("port"));
+        mongodbMap.put("database", params.get("database"));
+        mongodbMap.put("username", params.get("username"));
+        mongodbMap.put("password", params.get("password"));
         if (additionalMode == null) {
-            additionalMode = true;
+            flag = "on".endsWith(additionalMode);
         }
-        Map<String, Object> result = syncArticleService.autoMargeArticles(additionalMode, mongodbMap);
+        Map<String, Object> result = syncArticleService.autoMargeArticles(flag, mongodbMap);
         return new CommonVo(true, result);
     }
 }
