@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/favicon.ico">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.4/examples/theme/">
+
+    <title>MySpringCloud Project</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap theme -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/dist/css/bootstrap-theme.min.css"
+          rel="stylesheet">
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/css/ie10-viewport-bug-workaround.css"
+          rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/examples/theme/theme.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/js/ie8-responsive-file-warning.js"></script>
+    <![endif]-->
+    <script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+
+<div id="app">
+
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Bootstrap theme</a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="./index.html">Home</a></li>
+                    <li><a href="./swagger-ui.html">Swagger UI</a></li>
+                    <li><a href="https://github.com/Sicmatr1x/MySpringCloud">Github</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">Dropdown <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li class="dropdown-header">Nav header</li>
+                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">One more separated link</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+
+        <!-- Main jumbotron for a primary marketing message or call to action -->
+        <div class="jumbotron">
+            <h1>{{ message }}</h1>
+            <p>This is a template showcasing the spider of zhihu article saver included in SpringCloud. Use it as a starting
+                point
+                to save zhihu article into your local mongoDB.</p>
+        </div>
+
+        <div class="page-header">
+            <h1>Recently Articles</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#id</th>
+                        <th>createdTime</th>
+                        <th>url</th>
+                        <th>title</th>
+                    </tr>
+                    </thead>
+                    <tbody v-for="(item, index) in recentlyArticleList" :key="item.id">
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ timeFormatter(item.createdTime) }}</td>
+                        <td>{{ item.url }}</td>
+                        <td>{{ item.title }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div><!--row-->
+
+
+        <div class="page-header">
+            <h1>Buttons1234</h1>
+        </div>
+        <p>
+            <button type="button" class="btn btn-lg btn-default">Default</button>
+            <button type="button" class="btn btn-lg btn-primary">Primary</button>
+            <button type="button" class="btn btn-lg btn-success">Success</button>
+            <button type="button" class="btn btn-lg btn-info">Info</button>
+            <button type="button" class="btn btn-lg btn-warning">Warning</button>
+            <button type="button" class="btn btn-lg btn-danger">Danger</button>
+            <button type="button" class="btn btn-lg btn-link">Link</button>
+        </p>
+
+        <div class="page-header">
+            <h1>List groups</h1>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="list-group">
+                    <a href="#" class="list-group-item active">
+                        <h4 class="list-group-item-heading">List group item heading</h4>
+                        <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed
+                            diam
+                            eget risus varius blandit.</p>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">List group item heading</h4>
+                        <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed
+                            diam
+                            eget risus varius blandit.</p>
+                    </a>
+                    <a href="#" class="list-group-item">
+                        <h4 class="list-group-item-heading">List group item heading</h4>
+                        <p class="list-group-item-text">Donec id elit non mi porta gravida at eget metus. Maecenas sed
+                            diam
+                            eget risus varius blandit.</p>
+                    </a>
+                </div>
+            </div><!-- /.col-sm-4 -->
+        </div>
+
+    </div> <!-- /container -->
+
+</div><!--app-->
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
+        crossorigin="anonymous"></script>
+<script>
+    window.jQuery || document.write('<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/js/vendor/jquery.min.js"><\/script>')
+</script>
+
+<!-- Axios JavaScript -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Vue JavaScript -->
+<script type="text/javascript" language="JavaScript">
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'MySpringCloud Project',
+    recentlyArticleList: [
+        {
+            "id": "609b78955cf2fb21041bd353",
+            "createdTime": 1620801685679,
+            "url": "https://zhuanlan.zhihu.com/p/370921524",
+            "source": "ZHIHU_ANSWER",
+            "title": null,
+            "body": null,
+            "markdown": null,
+            "tags": null,
+            "category": null
+        }
+    ]
+  },
+  watch: {
+
+  },
+  computed: {
+
+  },
+  created: function () {
+    console.log("Vue created");
+
+  },
+  mounted: function () {
+    console.log("Vue mounted");
+    console.log(this);
+    let self = this;
+    /*$.ajax({
+     type: "GET",
+     url: "/notebook/recently/articles",
+     data: {number: 5},
+     dataType: "json",
+     success: function(response) {
+        //console.log(response);
+        if (response.success) {
+            //console.log(this);
+            //self.recentlyArticleList = response.data;
+        } else {
+            // filed
+        }
+     }
+    });*/
+
+    axios.get('/notebook/recently/articles', {
+        params: {
+          number: 6
+        }
+    })
+    .then(function (axiosResponse) {
+        let response = axiosResponse.data;
+        console.log(response);
+        self.recentlyArticleList = response.data;
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
+
+  },
+  methods: {
+    timeFormatter: function (timestamp) {
+        let date = new Date(timestamp);
+        return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    }
+  }
+})
+
+</script>
+
+<!-- Bootstrap core JavaScript -->
+<!-- Placed at the end of the document so the pages load faster -->
+
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/js/docs.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="https://cdn.jsdelivr.net/npm/@bootcss/v3.bootcss.com@1.0.8/assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+</html>
