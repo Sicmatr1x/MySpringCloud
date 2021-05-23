@@ -6,7 +6,6 @@
     <groupId>com.sicmatr1x</groupId>
     <artifactId>spring-cloud</artifactId>
     <version>1.0.0.BUILD-SNAPSHOT</version>
-    <packaging>pom</packaging><!-- 表示这个是一个pom父工程 -->
 
     <modules>
         <module>spring-cloud-eureka</module><!-- port: 8091 -->
