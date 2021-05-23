@@ -39,6 +39,11 @@ spring-cloud-consumer: 8090
 spring-cloud-eureka: 8091
 spring-cloud-mongo-producer: 8092
 
+### webpage
+
+- Spring Cloud eureka 发现中心: http://localhost:8091/
+- Swagger2 UI: http://localhost:8090/swagger-ui.html
+
 ### API
 
 #### General API
