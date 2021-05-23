@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Constant {
 
-    public String version = "1.0.0.20201019";
+    public String version = "20210523";
 
     public String getVersion() {
         return version;
