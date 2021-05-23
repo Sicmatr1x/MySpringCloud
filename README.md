@@ -22,22 +22,37 @@ Server:
 5. spring-cloud-spider
   - port: 8093
   - description: 提供网页爬取服务
-
+6. spring-cloud-mongo-sync
+  - port: 8094
+  - description: 用于连到待备份的该项目注册中心上开始同步mongoDB数据到本地mongoDB
 
 ## install
 
-### MongoDB
+### Init MongoDB
+
+STEP 1: Download and install [MongoDB Community](https://www.mongodb.com/try/download/community)
+
+STEP 2: Run MongoDB service: cd to your mongo/bin folder
 
 ```
-use NoteBookServer
-db.createUser({user:'NoteBookServer_appln',pwd:'Friday5',roles:[{role:'readWrite',db:'NoteBookServer'}]})
+mongod  --dbpath "D:\Program Files\mongodb-windows-x86_64-4.4.4\data\db"
 ```
+
+STEP 3: Test MongoDB service status, open `localhost:27017` in browser.
+
+STEP 4: Create Collection and documents which this project is need: cd to your mongo/bin folder
+
+```
+mongo
+> use NoteBookServer
+> db.createUser({user:'NoteBookServer_appln',pwd:'Friday5',roles:[{role:'readWrite',db:'NoteBookServer'}]})
+```
+
+STEP 5: Run spring-cloud-mongo-producer service, it will init document after springboot is start up
 
 ## How to use
 
-spring-cloud-consumer: 8090
-spring-cloud-eureka: 8091
-spring-cloud-mongo-producer: 8092
+
 
 ### webpage
 
