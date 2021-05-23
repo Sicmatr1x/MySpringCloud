@@ -100,16 +100,16 @@
                     <tr>
                         <th>#id</th>
                         <th>createdTime</th>
-                        <th>url</th>
                         <th>title</th>
+                        <th>StandAlongCopy</th>
                     </tr>
                     </thead>
                     <tbody v-for="(item, index) in recentlyArticleList" :key="item.id">
                     <tr>
                         <td>{{ item.id }}</td>
                         <td>{{ timeFormatter(item.createdTime) }}</td>
-                        <td>{{ item.url }}</td>
-                        <td>{{ item.title }}</td>
+                        <td><a :href="item.url">{{ getTitle(item.title) }}</a></td>
+                        <th><a :href="getStandAlongUrl(item.url)">Read</a></th>
                     </tr>
                     </tbody>
                 </table>
@@ -238,9 +238,18 @@ var app = new Vue({
 
   },
   methods: {
+    getTitle: function (title) {
+        if (title == null) {
+            return 'Null';
+        }
+        return title == '' ? 'Blank' : title;
+    },
     timeFormatter: function (timestamp) {
         let date = new Date(timestamp);
         return date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
+    },
+    getStandAlongUrl: function (url) {
+        return 'http://localhost:8090/notebook/article?url=' + url;
     }
   }
 })
