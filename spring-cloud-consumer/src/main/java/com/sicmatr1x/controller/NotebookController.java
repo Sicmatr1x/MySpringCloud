@@ -43,7 +43,7 @@ public class NotebookController {
     @Autowired
     private ObjectMapper objectMapper;
 
-    private static Logger logger = Logger.getLogger(NotebookController.class);
+    private static final Logger logger = Logger.getLogger(NotebookController.class);
 
     /**
      * 检查版本号
@@ -263,6 +263,38 @@ public class NotebookController {
     public CommonVo findRecentlyArticles(@RequestParam(required = false) Integer number) throws IOException {
         CommonVo response = new CommonVo(false);
         List<Article> list = articleService.findRecentlyArticles(number);
+        if (list == null) {
+            response.setErrorMessage("Not found any result in DB");
+        } else {
+            response.setSuccess(true);
+            response.setData(list);
+        }
+        return response;
+    }
+
+    /**
+     * 模糊搜索笔记
+     * @param keyword 关键字
+     * @param type 关键字
+     * @param pageBegin
+     * @param pageSize
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/articles/search", method = RequestMethod.GET)
+    @ApiOperation(value = "查询最近创建的n个笔记", notes = "查询并返回最近创建的n个笔记")
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query", name = "keyword", value = "房价", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "type", value = "title", required = true, dataType = "String"),
+            @ApiImplicitParam(paramType = "query", name = "number", value = "3", required = false, dataType = "Integer")
+    })
+    @ApiResponse(code = 200, message = "最近创建的n个笔记", response = String.class)
+    public CommonVo searchArticles(@RequestParam(required = true) String keyword,
+                                   @RequestParam(required = true) String type,
+                                   @RequestParam(required = false) Integer pageBegin,
+                                   @RequestParam(required = false) Integer pageSize) throws IOException {
+        CommonVo response = new CommonVo(false);
+        List<Article> list = articleService.searchArticles(keyword, type, pageBegin, pageSize);
         if (list == null) {
             response.setErrorMessage("Not found any result in DB");
         } else {

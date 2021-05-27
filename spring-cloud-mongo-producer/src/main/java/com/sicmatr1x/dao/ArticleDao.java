@@ -11,4 +11,6 @@ public interface ArticleDao {
     public Article findOneArticleByURL(String url);
 
     public List<Article> findRecentlyArticles(Integer number);
+
+    public List<Article> searchArticlesByTitle(String keyword, Integer pageBegin, Integer pageSize);
 }

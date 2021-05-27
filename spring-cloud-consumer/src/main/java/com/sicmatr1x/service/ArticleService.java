@@ -25,4 +25,18 @@ public interface ArticleService {
      */
     @RequestMapping(value = "/recently/articles", method = RequestMethod.GET)
     public List<Article> findRecentlyArticles(@RequestParam(value="number", required = false) Integer number);
+
+    /**
+     * 根据笔记title模糊搜索笔记
+     * @param keyword
+     * @param type
+     * @param pageBegin
+     * @param pageSize
+     * @return
+     */
+    @RequestMapping(value = "/articles/search", method = RequestMethod.GET)
+    public List<Article> searchArticles(@RequestParam(value="keyword", required = true) String keyword,
+                                        @RequestParam(value="type", required = true) String type,
+                                        @RequestParam(value="pageBegin", required = false) Integer pageBegin,
+                                        @RequestParam(value="pageSize", required = false) Integer pageSize);
 }

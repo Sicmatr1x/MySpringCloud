@@ -27,4 +27,9 @@ public class ArticleServiceImpl implements ArticleService{
     public List<Article> findRecentlyArticles(Integer number) {
         return articleDao.findRecentlyArticles(number);
     }
+
+    @Override
+    public List<Article> searchArticlesByTitle(String keyword, Integer pageBegin, Integer pageSize) {
+        return articleDao.searchArticlesByTitle(keyword, pageBegin, pageSize);
+    }
 }

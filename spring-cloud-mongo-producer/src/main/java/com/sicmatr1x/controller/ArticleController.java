@@ -2,6 +2,7 @@ package com.sicmatr1x.controller;
 
 import com.sicmatr1x.pojo.Article;
 import com.sicmatr1x.service.ArticleService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +34,23 @@ public class ArticleController {
     public List<Article> findRecentlyArticles(@RequestParam(required = false) Integer number) throws IOException {
         List<Article> list = articleService.findRecentlyArticles(number);
         return list;
+    }
+
+    @RequestMapping(value = "/articles/search", method = RequestMethod.GET)
+    public List<Article> searchArticles(@RequestParam(required = true) String keyword,
+                                        @RequestParam(required = true) String type,
+                                        @RequestParam(required = false) Integer pageBegin,
+                                        @RequestParam(required = false) Integer pageSize) throws IOException {
+        if (StringUtils.equals("title", type)) {
+            // {"title": {$regex:/es/}}
+            //TODO
+            List<Article> list = articleService.searchArticlesByTitle(keyword, pageBegin, pageSize);
+            return list;
+        } else if (StringUtils.equals("body", type)) {
+            //TODO
+        } else {
+            //TODO
+        }
+        return null;
     }
 }

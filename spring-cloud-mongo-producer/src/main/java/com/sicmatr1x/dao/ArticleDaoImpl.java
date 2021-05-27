@@ -1,6 +1,7 @@
 package com.sicmatr1x.dao;
 
 import com.sicmatr1x.pojo.Article;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -9,6 +10,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Repository
 public class ArticleDaoImpl implements ArticleDao{
@@ -37,5 +39,32 @@ public class ArticleDaoImpl implements ArticleDao{
         query.limit(number != null && number > 0 ? number : 3);
         List<Article> result = mongoTemplate.find(query, Article.class);
         return result;
+    }
+
+    @Override
+    public List<Article> searchArticlesByTitle(String keyword, Integer pageBegin, Integer pageSize) {
+        // {"title": {$regex:/es/}}
+        Sort sort = new Sort(Sort.Direction.DESC, "createdTime");
+        Query query = new Query();
+        Pattern pattern = Pattern.compile(".*?" + escapeSpecialWord(keyword) + ".*");
+        Criteria c5 = Criteria.where("title").regex(pattern);
+        query.addCriteria(c5);
+        query.with(sort);
+        query.fields().exclude("body");
+//        query.limit(number != null && number > 0 ? number : 3);
+        List<Article> result = mongoTemplate.find(query, Article.class);
+        return result;
+    }
+
+    private String escapeSpecialWord(String keyword) {
+        if (StringUtils.isNotBlank(keyword)) {
+            String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };
+            for (String key : fbsArr) {
+                if (keyword.contains(key)) {
+                    keyword = keyword.replace(key, "\\" + key);
+                }
+            }
+        }
+        return keyword;
     }
 }
