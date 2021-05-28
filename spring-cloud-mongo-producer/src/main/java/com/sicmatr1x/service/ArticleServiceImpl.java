@@ -32,4 +32,9 @@ public class ArticleServiceImpl implements ArticleService{
     public List<Article> searchArticlesByTitle(String keyword, Integer pageBegin, Integer pageSize) {
         return articleDao.searchArticlesByTitle(keyword, pageBegin, pageSize);
     }
+
+    @Override
+    public List<Article> searchArticlesByBody(String keyword, Integer pageBegin, Integer pageSize) {
+        return articleDao.searchArticlesByBody(keyword, pageBegin, pageSize);
+    }
 }

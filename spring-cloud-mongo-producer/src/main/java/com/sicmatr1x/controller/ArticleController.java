@@ -47,7 +47,8 @@ public class ArticleController {
             List<Article> list = articleService.searchArticlesByTitle(keyword, pageBegin, pageSize);
             return list;
         } else if (StringUtils.equals("body", type)) {
-            //TODO
+            List<Article> list = articleService.searchArticlesByBody(keyword, pageBegin, pageSize);
+            return list;
         } else {
             //TODO
         }
