@@ -19,6 +19,14 @@ public interface ArticleService {
     public Article findOneArticleByURL(@RequestParam("url") String url);
 
     /**
+     * 根据URL删除文章
+     * @param url
+     * @return
+     */
+    @RequestMapping(value = "/article", method = RequestMethod.DELETE)
+    public Article deleteOneArticleByURL(@RequestParam("url") String url);
+
+    /**
      * 查找最近爬取的文章
      * @param number
      * @return

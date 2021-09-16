@@ -102,14 +102,18 @@
           <tr>
             <th>createdTime</th>
             <th>title</th>
-            <th>StandAlongCopy</th>
+            <th>Copy(Local)</th>
+            <th>Copy</th>
+            <th>Delete</th>
           </tr>
           </thead>
           <tbody v-for="(item, index) in recentlyArticleList" :key="item.id">
           <tr>
             <td>{{ timeFormatter(item.createdTime) }}</td>
             <td><a :href="item.url">{{ getTitle(item.title) }}</a></td>
+            <th><a :href="getLocalStandAlongUrl(item.url)">Read</a></th>
             <th><a :href="getStandAlongUrl(item.url)">Read</a></th>
+            <th><button type="button" class="btn btn-primary" v-on:click="deleteByUrl(item.url)">Delete</button></th>
           </tr>
           </tbody>
         </table>
@@ -148,14 +152,18 @@
           <tr>
             <th>createdTime</th>
             <th>title</th>
-            <th>StandAlongCopy</th>
+            <th>Copy(Local)</th>
+            <th>Copy</th>
+            <th>Delete</th>
           </tr>
           </thead>
           <tbody v-for="(item, index) in searchList" :key="item.id">
           <tr>
             <td>{{ timeFormatter(item.createdTime) }}</td>
             <td><a :href="item.url">{{ getTitle(item.title) }}</a></td>
+            <th><a :href="getLocalStandAlongUrl(item.url)">Read</a></th>
             <th><a :href="getStandAlongUrl(item.url)">Read</a></th>
+            <th><button type="button" class="btn btn-primary" v-on:click="deleteByUrl(item.url)">Delete</button></th>
           </tr>
           </tbody>
         </table>
@@ -328,7 +336,27 @@
                 return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + ' ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds();
             },
             getStandAlongUrl: function (url) {
+                return 'http://353873da64.qicp.vip/notebook/article?url=' + url;
+            },
+            getLocalStandAlongUrl: function (url) {
                 return 'http://localhost:8090/notebook/article?url=' + url;
+            },
+            deleteByUrl: function (url) {
+                let self = this;
+                axios.get('/notebook/article/delete', {
+                    params: {
+                        url: url
+                    }
+                })
+                .then(function (axiosResponse) {
+                    let response = axiosResponse.data;
+                    console.log(response);
+                    alert(response.data.title + ' is deleted !');
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert(error);
+                });
             },
             searchArticlesByTitle: function () {
                 let self = this;

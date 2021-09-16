@@ -56,6 +56,9 @@ public class ZhihuZhuanlanHtmlUtil extends HtmlUtil{
 
   public String initTitle() {
     Elements question = this.doc.select(".Post-Title");
+    if (question.isEmpty()) {
+      question = this.doc.select(".QuestionHeader-title");
+    }
     return question.get(0).text();
   }
 

@@ -77,6 +77,15 @@ public class ArticleDaoImpl implements ArticleDao{
         return result;
     }
 
+    @Override
+    public Article deleteOneArticleByURL(String url) {
+        Query query = new Query(Criteria.where("url").is(url));
+        Article articleEntity = mongoTemplate.findOne(query, Article.class);
+        mongoTemplate.remove(articleEntity);
+        articleEntity.setBody("");
+        return articleEntity;
+    }
+
     private String escapeSpecialWord(String keyword) {
         if (StringUtils.isNotBlank(keyword)) {
             String[] fbsArr = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}", "|" };

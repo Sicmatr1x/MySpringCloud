@@ -37,4 +37,9 @@ public class ArticleServiceImpl implements ArticleService{
     public List<Article> searchArticlesByBody(String keyword, Integer pageBegin, Integer pageSize) {
         return articleDao.searchArticlesByBody(keyword, pageBegin, pageSize);
     }
+
+    @Override
+    public Article deleteOneArticleByURL(String url) {
+        return articleDao.deleteOneArticleByURL(url);
+    }
 }

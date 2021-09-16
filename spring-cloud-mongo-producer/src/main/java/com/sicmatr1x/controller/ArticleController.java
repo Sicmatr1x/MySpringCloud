@@ -30,6 +30,14 @@ public class ArticleController {
         return article;
     }
 
+    @RequestMapping(value = "/article", method = RequestMethod.DELETE)
+    public Article deleteOneArticleByURL(@RequestParam String url) throws IOException {
+        Article article = null;
+        String[] work = url.split("\\?");
+        article = articleService.deleteOneArticleByURL(work[0]);
+        return article;
+    }
+
     @RequestMapping(value = "/recently/articles", method = RequestMethod.GET)
     public List<Article> findRecentlyArticles(@RequestParam(required = false) Integer number) throws IOException {
         List<Article> list = articleService.findRecentlyArticles(number);

@@ -108,6 +108,10 @@ public class NotebookController {
         return response;
     }
 
+    private boolean isZhihuZhuanlan(String url) {
+        return url.contains("zhuanlan");
+    }
+
     /**
      * 添加知乎回答
      *
@@ -130,13 +134,23 @@ public class NotebookController {
         Article article = new Article();
         String[] work = url.split("\\?");
         article.setUrl(work[0]);
-        article.setSource(ArticleSource.ZHIHU_ANSWER);
         Article resultArticle = null;
         try {
-            resultArticle = spiderService.spiderZhihuAnswer(article);
+            if (isZhihuZhuanlan(url)) {
+                article.setSource(ArticleSource.ZHIHU_ZHUANLAN);
+                resultArticle = spiderService.spiderZhihuZhuanLan(article);
+            } else {
+                article.setSource(ArticleSource.ZHIHU_ANSWER);
+                resultArticle = spiderService.spiderZhihuAnswer(article);
+            }
             response.setSuccess(true);
             // 避免返回body过大
-            resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
+            if (resultArticle.getBody() != null) {
+                resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
+            } else {
+                response.setSuccess(false);
+                response.setErrorMessage("Article body is empty. 文章内容为空。");
+            }
             response.setData(resultArticle);
         } catch (IOException e) {
             e.printStackTrace();
@@ -237,7 +251,7 @@ public class NotebookController {
     @ApiImplicitParams({
             @ApiImplicitParam(paramType = "query",name = "url",value = "URL",dataType = "String",defaultValue = "https://www.huxiu.com/article/378159.html",required = true)
     })
-    public String findOneArticleById(@RequestParam String url) throws IOException {
+    public String findOneArticleByUrl(@RequestParam String url) throws IOException {
         Article article = null;
         String[] work = url.split("\\?");
         article = articleService.findOneArticleByURL(work[0]);
@@ -247,6 +261,33 @@ public class NotebookController {
             return objectMapper.writeValueAsString(response);
         } else {
             return "<html>\n" + article.getBody() + "\n</html>";
+        }
+    }
+
+    @RequestMapping(value = "/article/delete", method = RequestMethod.GET)
+    @ApiOperation(
+            value = "根据URL删除第一个匹配的article",
+            notes = "根据URL删除第一个匹配的article",
+            httpMethod = "GET",
+            consumes = "*/*",
+            protocols = "http",
+            produces = "application/json;charset=UTF-8",
+            response = String.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "url",value = "URL",dataType = "String",defaultValue = "https://www.huxiu.com/article/378159.html",required = true)
+    })
+    public CommonVo deleteOneArticleByUrl(@RequestParam String url) throws IOException {
+        CommonVo response = new CommonVo(false);
+        Article article = null;
+        String[] work = url.split("\\?");
+        article = articleService.deleteOneArticleByURL(work[0]);
+        if (article == null) {
+            response.setErrorMessage("Not found any result in DB");
+            return response;
+        } else {
+            response.setData(article);
+            response.setSuccess(true);
+            return response;
         }
     }
 

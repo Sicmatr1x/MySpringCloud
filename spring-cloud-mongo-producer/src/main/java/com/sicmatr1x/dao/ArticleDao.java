@@ -15,4 +15,6 @@ public interface ArticleDao {
     public List<Article> searchArticlesByTitle(String keyword, Integer pageBegin, Integer pageSize);
 
     public List<Article> searchArticlesByBody(String keyword, Integer pageBegin, Integer pageSize);
+
+    public Article deleteOneArticleByURL(String url);
 }
