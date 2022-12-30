@@ -7,6 +7,7 @@ import com.sicmatr1x.service.ArticleService;
 import com.sicmatr1x.service.SpiderService;
 import com.sicmatr1x.vo.CommonVo;
 import io.swagger.annotations.*;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,11 +62,11 @@ public class NotebookController {
             produces = "application/json;charset=UTF-8",
             response = CommonVo.class)
     public CommonVo version() {
-        logger.info("/notebook/version");
+//        logger.info("/notebook/version");
         Map<String, String> dataMap = new HashMap<>();
         dataMap.put("version", constant.getVersion());
         CommonVo response = new CommonVo(true, dataMap);
-        logger.info("response: " + response);
+//        logger.info("response: " + response);
         return response;
     }
 
@@ -152,6 +154,55 @@ public class NotebookController {
                 response.setErrorMessage("Article body is empty. 文章内容为空。");
             }
             response.setData(resultArticle);
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setErrorMessage(e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * 添加文字笔记
+     *
+     * @return is add job success
+     */
+    @RequestMapping(value = "/add/textNote", method = RequestMethod.POST)
+    @ApiOperation(
+            value = "添加文字笔记",
+            notes = "添加文字笔记到数据库",
+            httpMethod = "POST",
+            consumes = "*/*",
+            protocols = "http",
+            produces = "application/json;charset=UTF-8",
+            response = CommonVo.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(paramType = "query",name = "text",value = "知乎问题URL",dataType = "String",defaultValue = "hello test test test",required = true)
+    })
+    public CommonVo addTextNote(@RequestParam String text) {
+        CommonVo response = new CommonVo(false);
+        Article article = new Article();
+        if (StringUtils.isEmpty(text)) {
+            response.setErrorMessage("textContent is empty");
+            return response;
+        }
+        Article resultArticle = null;
+        try {
+            List<Article> list = articleService.searchArticles(text, "body", 0, 1);
+            if (!list.isEmpty()) {
+                response.setErrorMessage("textContent already exist!");
+                response.setData(list.get(0));
+                return response;
+            }
+
+            article.setCategory("TextNote");
+            String body = "<p>" + text + "</p>";
+            article.setBody(body);
+            String title = text.length() > 100 ? text.substring(0, 100) + "..." : text;
+            article.setTitle(title);
+            article.setCreatedTime(new Date());
+            boolean isSuccess = articleService.addSave(article);
+            response.setSuccess(isSuccess);
+            response.setData(article);
         } catch (IOException e) {
             e.printStackTrace();
             response.setErrorMessage(e.getMessage());
