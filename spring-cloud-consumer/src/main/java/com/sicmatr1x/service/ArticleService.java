@@ -2,10 +2,12 @@ package com.sicmatr1x.service;
 
 import com.sicmatr1x.pojo.Article;
 import org.springframework.cloud.netflix.feign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.io.IOException;
 import java.util.List;
 
 @FeignClient(name= "spring-cloud-mongo-producer")
@@ -47,4 +49,12 @@ public interface ArticleService {
                                         @RequestParam(value="type", required = true) String type,
                                         @RequestParam(value="pageBegin", required = false) Integer pageBegin,
                                         @RequestParam(value="pageSize", required = false) Integer pageSize);
+
+    /**
+     * 添加文字笔记
+     * @param article
+     * @return
+     */
+    @RequestMapping(value = "/article/save", method = RequestMethod.POST)
+    public boolean addSave(@RequestBody Article article) throws IOException;
 }
