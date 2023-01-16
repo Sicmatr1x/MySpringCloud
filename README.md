@@ -22,6 +22,8 @@ Server:
 5. [spring-cloud-spider](http://localhost:8093/swagger-ui.html)
   - port: 8093
   - description: 提供网页爬取服务
+  - 接入[Arthas](https://arthas.aliyun.com/doc/quick-start.html)
+    - HTTP: http://127.0.0.1:8563/
 6. [spring-cloud-mongo-sync](http://localhost:8094/swagger-ui.html)
   - port: 8094
   - description: 用于连到待备份的该项目注册中心上开始同步mongoDB数据到本地mongoDB

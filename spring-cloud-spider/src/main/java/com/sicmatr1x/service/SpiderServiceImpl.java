@@ -25,11 +25,22 @@ public class SpiderServiceImpl implements SpiderService {
     @Autowired
     private HuxiuHtmlUtil huxiuHtmlUtil;
 
+    /**
+     * 截取 article 对象的body字段，避免响应体过大
+     * @param article
+     */
+    private void smaller(Article article) {
+        if (article.getBody() != null) {
+            article.setBody(article.getBody().substring(0, 400) + "......");
+        }
+    }
+
     @Override
     public Article spiderZhihuAnswer(Article article) throws IOException {
         // 使用URL查询数据库，若已存在则不爬取
         Article articleResult = articleService.findOneArticleByURL(article.getUrl());
         if (articleResult != null) {
+            smaller(articleResult);
             return articleResult;
         }
         // 开始爬取
@@ -40,6 +51,7 @@ public class SpiderServiceImpl implements SpiderService {
         article.setCreatedTime(new Date());
         articleService.saveArticle(article);
 
+        smaller(article);
         return article;
     }
 
@@ -48,6 +60,7 @@ public class SpiderServiceImpl implements SpiderService {
         // 使用URL查询数据库，若已存在则不爬取
         Article articleResult = articleService.findOneArticleByURL(article.getUrl());
         if (articleResult != null) {
+            smaller(articleResult);
             return articleResult;
         }
         // 开始爬取
@@ -57,6 +70,8 @@ public class SpiderServiceImpl implements SpiderService {
         article.setBody(zhihuZhuanlanHtmlUtil.getContent());
         article.setCreatedTime(new Date());
         articleService.saveArticle(article);
+
+        smaller(article);
         return article;
     }
 
@@ -65,6 +80,7 @@ public class SpiderServiceImpl implements SpiderService {
         // 使用URL查询数据库，若已存在则不爬取
         Article articleResult = articleService.findOneArticleByURL(article.getUrl());
         if (articleResult != null) {
+            smaller(articleResult);
             return articleResult;
         }
         // 开始爬取
@@ -74,6 +90,8 @@ public class SpiderServiceImpl implements SpiderService {
         article.setBody(huxiuHtmlUtil.getContent());
         article.setCreatedTime(new Date());
         articleService.saveArticle(article);
+
+        smaller(article);
         return article;
     }
 }

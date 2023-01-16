@@ -146,13 +146,6 @@ public class NotebookController {
                 resultArticle = spiderService.spiderZhihuAnswer(article);
             }
             response.setSuccess(true);
-            // 避免返回body过大
-            if (resultArticle.getBody() != null) {
-                resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
-            } else {
-                response.setSuccess(false);
-                response.setErrorMessage("Article body is empty. 文章内容为空。");
-            }
             response.setData(resultArticle);
         } catch (IOException e) {
             e.printStackTrace();
