@@ -13,18 +13,21 @@ Server:
 2. spring-cloud-common
   - port: N/A
   - description: 放一些common的类与POJO等
-3. spring-cloud-mongo-producer
+3. [spring-cloud-mongo-producer](http://localhost:8092/swagger-ui.html)
   - port: 8092
   - description: 用于连接mongoDB
-4. spring-cloud-consumer
+4. [spring-cloud-consumer](http://localhost:8090/swagger-ui.html)
   - port: 8090
   - description: 提供控制层访问
-5. spring-cloud-spider
+5. [spring-cloud-spider](http://localhost:8093/swagger-ui.html)
   - port: 8093
   - description: 提供网页爬取服务
-6. spring-cloud-mongo-sync
+6. [spring-cloud-mongo-sync](http://localhost:8094/swagger-ui.html)
   - port: 8094
   - description: 用于连到待备份的该项目注册中心上开始同步mongoDB数据到本地mongoDB
+7. [spring-cloud-job](http://localhost:8095/swagger-ui.html)
+  - port: 8095
+  - description: 定时任务
 
 ## install
 

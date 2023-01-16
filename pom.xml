@@ -13,6 +13,7 @@
         <module>spring-cloud-mongo-sync</module><!-- port: 8094 -->
         <module>spring-cloud-consumer</module><!-- port: 8090 -->
         <module>spring-cloud-spider</module><!-- port: 8093 -->
+        <module>spring-cloud-job</module><!-- port: 8095 -->
         <module>spring-cloud-common</module>
     </modules>
 
