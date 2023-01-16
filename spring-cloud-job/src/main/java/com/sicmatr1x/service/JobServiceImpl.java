@@ -19,14 +19,23 @@ public class JobServiceImpl implements JobService {
             this.stdScheduler = StdSchedulerFactory.getDefaultScheduler();
         }
         // 2-4. 创建任务对象并关联触发器
-//        this.addTestJob(TestJob.class, "TestJob", "default", TestJob.getTrigger());
-        this.addTestJob(TestCronJob.class, "TestCronJob", "default", TestCronJob.getTrigger());
+//        this.addJob(TestJob.class, "TestJob", "default", TestJob.getTrigger());
+//        this.addJob(TestCronJob.class, "TestCronJob", "default", TestCronJob.getTrigger());
+        this.addCronJob(TestCronJob.class, "TestCronJob", "default", "TestCron", "0/10 * * * * ? ");
 
         // 5. 启动
         stdScheduler.start();
     }
 
-    public void addTestJob(Class<? extends Job> jobClass, String jobName, String jobGroup, Trigger trigger) throws SchedulerException {
+    /**
+     * 添加job
+     * @param jobClass 新添加的job的java类
+     * @param jobName job名
+     * @param jobGroup job分组
+     * @param trigger job调起的触发器
+     * @throws SchedulerException
+     */
+    public void addJob(Class<? extends Job> jobClass, String jobName, String jobGroup, Trigger trigger) throws SchedulerException {
         // 2. 任务实例 JobDetail
         // 参数 1：任务的名称；参数 2：任务组的名称
         JobDetail jobDetail = JobBuilder.newJob(jobClass)
@@ -37,5 +46,23 @@ public class JobServiceImpl implements JobService {
         stdScheduler.scheduleJob(jobDetail, trigger);
     }
 
+    /**
+     * 添加cron job
+     * 会在 cronStr 时调起执行
+     * @param jobClass 新添加的job的java类
+     * @param jobName job名
+     * @param jobGroup job分组
+     * @param triggerName 触发器名
+     * @param cronStr cron时间格式
+     * @throws SchedulerException
+     */
+    public void addCronJob(Class<? extends Job> jobClass, String jobName, String jobGroup, String triggerName, String cronStr) throws SchedulerException {
+        Trigger trigger = TriggerBuilder.newTrigger()
+                .withIdentity(triggerName, "default")
+                .withSchedule(CronScheduleBuilder.cronSchedule(cronStr))
+                .startNow()
+                .build();
+        this.addJob(jobClass, jobName, jobGroup, trigger);
+    }
 
 }
