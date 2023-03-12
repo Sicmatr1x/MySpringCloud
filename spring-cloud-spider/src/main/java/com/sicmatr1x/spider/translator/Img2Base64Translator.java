@@ -74,6 +74,9 @@ public class Img2Base64Translator implements Translator {
 //                ByteArrayInputStream swapStream = new ByteArrayInputStream(data.toByteArray());
 //                BufferedImage originalImage = ImageIO.read(swapStream);
                 data.reset();
+                // 图片压缩
+                // 按照比例因子进行缩放，不指定高宽的具体大小 scale 比例 scale取值越大，比例越高，1f代表原比例，0.5f代表原比例的一半
+                // 图片的压缩质量 outputQuality是图片的质量，值是在0到1，越接近于1质量越好，越接近于0质量越差。
                 Thumbnails.fromURLs(Collections.singleton(new URL(imgURL))).scale(1f).outputQuality(0.1f).toOutputStream(data);
             }
             // 关闭流
