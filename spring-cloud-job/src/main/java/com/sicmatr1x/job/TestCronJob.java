@@ -23,6 +23,7 @@ public class TestCronJob implements Job {
 
     /**
      * 创建任务对象并关联触发器
+     *
      * @return
      */
     public static Trigger getTrigger() {
