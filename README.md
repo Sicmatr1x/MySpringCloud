@@ -6,6 +6,8 @@
 
 ## Project Structure
 
+WebPage: http://localhost:8090
+
 Server:
 1. spring-cloud-eureka
   - port: 8091
