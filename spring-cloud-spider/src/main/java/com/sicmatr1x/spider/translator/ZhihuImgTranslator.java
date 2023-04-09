@@ -1,5 +1,6 @@
 package com.sicmatr1x.spider.translator;
 
+import org.apache.log4j.Logger;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
@@ -7,15 +8,19 @@ import org.jsoup.select.Elements;
 
 import java.util.Iterator;
 
-public class ZhihuImgTranslator implements Translator{
+public class ZhihuImgTranslator implements Translator {
+
+  private static final Logger logger = Logger.getLogger(ZhihuImgTranslator.class);
+
   @Override
   public Element translate(Element element) {
     // 移除之后回答DOM下多余的noscript DOM
-    Elements noscriptNode = element.select("noscript");
-    if(noscriptNode.size() == 0){
+    Elements noScriptNode = element.select("noscript");
+    if (noScriptNode == null || noScriptNode.size() == 0) {
+      logger.warn("Could not get select(noscript):noScriptNode=" + noScriptNode);
       return element;
     }
-    noscriptNode.first().remove();
+    noScriptNode.first().remove();
     // 获取回答里面的img DOM
     Elements imgElements = element.select("img");
 
@@ -27,7 +32,7 @@ public class ZhihuImgTranslator implements Translator{
       // img转换成base64
       imgElement = img2Base64Translator.translate(imgElement);
       int size = imgElement.parentNode().outerHtml().length();
-      System.out.println(" => " + size + " byte, " + (size*1.0 / 1024)/1024 + " mb");
+      logger.info(" => " + size + " byte, " + (size*1.0 / 1024)/1024 + " mb");
     }
     return element;
   }

@@ -1,10 +1,13 @@
 package com.sicmatr1x.spider;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import com.sicmatr1x.spider.translator.*;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -14,6 +17,8 @@ import java.util.Map;
 public class ZhihuHtmlUtil extends HtmlUtil {
 
     public static final String DOMAIN = "https://www.zhihu.com/";
+
+    private static final Logger logger = Logger.getLogger(ZhihuHtmlUtil.class);
 
     @Override
     void getHtml() throws IOException {
@@ -71,7 +76,7 @@ public class ZhihuHtmlUtil extends HtmlUtil {
      */
     public Element getOneAnswer() {
         Elements questionMainColumn = this.doc.select(".Question-mainColumn");
-        if (questionMainColumn.size() < 1) {
+        if (CollectionUtils.isEmpty(questionMainColumn)) {
             System.out.println("error: can not found class=\"Question-mainColumn\" in " + this.address);
         } else {
             Elements cards = questionMainColumn.get(0).select(".AnswerCard");
@@ -87,14 +92,15 @@ public class ZhihuHtmlUtil extends HtmlUtil {
         String title;
         try {
             Elements question = this.doc.select(".QuestionHeader-title");
-            if (question.size() < 0) {
+            if (CollectionUtils.isEmpty(question)) {
+                logger.warn("Analyze Page Warn:" + this.address + " could not select(.QuestionHeader-title)");
                 Elements titleNode = this.doc.select("title");
                 System.out.println(titleNode.text());
                 return titleNode.text();
             }
             title = question.get(0).text();
         } catch (IndexOutOfBoundsException error) {
-            System.out.println("Analyze Page Error:" + this.address);
+            logger.error("Analyze Page Error:" + this.address, error);
             return null;
         }
         return title;
@@ -125,25 +131,27 @@ public class ZhihuHtmlUtil extends HtmlUtil {
         int endIndex = this.address.indexOf("/", DOMAIN.length());
         String mode = this.address.substring(DOMAIN.length(), endIndex);
         this.title = this.getQuestionTitle();
-        if (this.title == null) {
+        if (StringUtils.isBlank(this.title)) {
             return;
-        }
-        if (this.title.equals("知乎 - 有问题，上知乎")) {
+        } else if (StringUtils.equals("知乎 - 有问题，上知乎", this.title)) {
+            logger.warn("Skip title:知乎 - 有问题，上知乎 url=" + this.address);
+            return;
+        } else if (StringUtils.equals("你似乎来到了没有知识存在的荒原 - 知乎", this.title)) {
+            logger.warn("Skip title:你似乎来到了没有知识存在的荒原 - 知乎 url=" + this.address);
             return;
         }
         headTitleTranslator.setTitleText(this.title);
 
-    if ("question".equals(mode)) {
-      if (this.address.contains("answer")) {
-        Element answerElement = this.getOneAnswer(); // 单个回答链接
-        Translator zhihuImgTranslator = new ZhihuImgTranslator();
-        answerElement = zhihuImgTranslator.translate(answerElement);
-        this.content = headTitleTranslator.translate(answerElement).html();
-
+        if (StringUtils.equals("question", mode)) {
+          if (this.address.contains("answer")) {
+            Element answerElement = this.getOneAnswer(); // 单个回答链接
+            Translator zhihuImgTranslator = new ZhihuImgTranslator();
+            answerElement = zhihuImgTranslator.translate(answerElement);
+            this.content = headTitleTranslator.translate(answerElement).html();
             } else {
                 this.getAnswerList(); // 问题链接
             }
-        } else if ("p".equals(mode)) { // 文章链接
+        } else if (StringUtils.equals("p", mode)) { // 文章链接
             this.getArticle();
         }
     }

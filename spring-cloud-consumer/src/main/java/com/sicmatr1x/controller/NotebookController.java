@@ -94,7 +94,8 @@ public class NotebookController {
     public CommonVo spiderZhihuAnswer(@PathVariable String questionId, @PathVariable String answerId) {
         CommonVo response = new CommonVo(false);
         Article article = new Article();
-        article.setUrl(spiderService.getDomainURLByName("zhihu") + "question/" + questionId + "/answer/" + answerId);
+        String url = spiderService.getDomainURLByName("zhihu") + "question/" + questionId + "/answer/" + answerId;
+        article.setUrl(url);
         article.setSource(ArticleSource.ZHIHU_ANSWER);
         Article resultArticle = null;
         try {
@@ -104,7 +105,7 @@ public class NotebookController {
             resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
             response.setData(resultArticle);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("url=" + url, e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
@@ -135,7 +136,14 @@ public class NotebookController {
         CommonVo response = new CommonVo(false);
         Article article = new Article();
         String[] work = url.split("\\?");
-        article.setUrl(work[0]);
+        if (work.length == 0 || StringUtils.isEmpty(work[0])) {
+            String msg = "Could not handle url=" + url;
+            logger.error(msg);
+            response.setErrorMessage(msg);
+            return response;
+        }
+        url = work[0].substring(work[0].indexOf("http"));
+        article.setUrl(url);
         Article resultArticle = null;
         try {
             if (isZhihuZhuanlan(url)) {
@@ -147,8 +155,8 @@ public class NotebookController {
             }
             response.setSuccess(true);
             response.setData(resultArticle);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.error("url=" + url, e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
@@ -197,7 +205,7 @@ public class NotebookController {
             response.setSuccess(isSuccess);
             response.setData(article);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("text=" + text, e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
@@ -234,7 +242,7 @@ public class NotebookController {
             resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
             response.setData(resultArticle);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("url=" + url, e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
@@ -271,7 +279,7 @@ public class NotebookController {
             resultArticle.setBody(resultArticle.getBody().substring(0, 400) + "......");
             response.setData(resultArticle);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("url=" + url, e);
             response.setErrorMessage(e.getMessage());
         }
         return response;
