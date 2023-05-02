@@ -6,6 +6,9 @@ import java.io.IOException;
 
 
 public interface SpiderService {
+
+    public Article spiderURL(Article article) throws IOException;
+
     public Article spiderZhihuAnswer(Article article) throws IOException;
 
     public Article spiderZhihuZhuanLan(Article article) throws IOException;
