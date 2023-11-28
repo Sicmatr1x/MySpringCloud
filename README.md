@@ -42,12 +42,19 @@ STEP 1: Download and install [MongoDB Community](https://www.mongodb.com/try/dow
 STEP 2: Run MongoDB service: cd to your mongo/bin folder
 
 ```
-mongod  --dbpath "D:\Program Files\mongodb-windows-x86_64-4.4.4\data\db"
+mongod  --dbpath "D:\Program Files\MongoDB\Server\4.4\data"
 ```
 
 STEP 3: Test MongoDB service status, open `localhost:27017` in browser.
 
 STEP 4: Create Collection and documents which this project is need: cd to your mongo/bin folder
+
+STEP 5: open MongoDBCompass.exe and connect to your db
+
+```
+mongodb://localhost:27017
+```
+
 
 ```
 mongo
